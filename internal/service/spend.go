@@ -68,3 +68,20 @@ func (s *spendService) CreateSpend(
 		RunningTotalMicros: runningTotal,
 	}, nil
 }
+
+func (s *spendService) GetDailySpend(
+	ctx context.Context,
+	campaignID int64,
+) (int64, error) {
+
+	tenantID, ok := tenant.FromContext(ctx)
+	if !ok {
+		return 0, fmt.Errorf("tenant id not found in context")
+	}
+
+	return s.redis.GetDailySpend(
+		ctx,
+		tenantID,
+		campaignID,
+	)
+}

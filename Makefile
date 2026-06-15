@@ -1,10 +1,14 @@
+fmt:
+	go fmt ./...
 
-run:
-	go run ./cmd/server
+vet:
+	go vet ./...
+
+build:
+	go build ./...
 
 test:
 	go test -race ./...
 
-lint:
-	go vet ./...
-
+run:
+	go run ./cmd/server
