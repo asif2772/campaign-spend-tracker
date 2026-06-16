@@ -3,17 +3,27 @@ package config
 import "os"
 
 type Config struct {
-	Port string
+	Port          string
+	PostgresURL   string
+	RedisAddr     string
+	RedisPassword string
 }
 
 func Load() Config {
-
-	port := os.Getenv("PORT")
-
-	if port == "" {
-		port = "8080"
-	}
 	return Config{
-		Port: port,
+		Port:          getEnv("PORT", "8080"),
+		PostgresURL:   getEnv("POSTGRES_URL", "postgres://postgres:password@localhost:5432/campaign?sslmode=disable"),
+		RedisAddr:     getEnv("REDIS_ADDR", "localhost:6379"),
+		RedisPassword: getEnv("REDIS_PASSWORD", ""),
 	}
+}
+
+func getEnv(key, fallback string) string {
+	value := os.Getenv(key)
+
+	if value == "" {
+		return fallback
+	}
+
+	return value
 }

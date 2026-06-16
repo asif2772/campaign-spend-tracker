@@ -11,4 +11,9 @@ type SpendService interface {
 		ctx context.Context,
 		request model.SpendRequest,
 	) (*model.SpendResponse, error)
+
+	GetDailySpend(
+		ctx context.Context,
+		campaignID int64,
+	) (int64, error)
 }
