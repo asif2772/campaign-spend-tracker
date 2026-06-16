@@ -1,41 +1,48 @@
 # Campaign Spend Tracker
 
+## Tech Stack
+
+* Go
+* PostgreSQL
+* Redis
+* Docker Compose
+
+---
+
 ## Requirements
 
 * Go 1.22+
-* Docker
+* Docker & Docker Compose
 * Git
 
 ---
 
-## Clone Repository
+## Clone
 
+```bash
 git clone https://github.com/asif2772/campaign-spend-tracker.git
+cd campaign-spend-tracker
+```
 
 ---
 
 ## Start Dependencies
 
+```bash
 docker compose up -d
+```
 
-This starts:
-
-* PostgreSQL
-* Redis
-
----
-
-## Verify Containers
-
-docker ps
+This automatically starts PostgreSQL and Redis and creates the required database table.
 
 ---
 
 ## Run Application
 
+```bash
 go run ./cmd/server
+```
 
-The server starts on:
+Server:
 
 http://localhost:8080
 
@@ -43,38 +50,58 @@ http://localhost:8080
 
 ## Health Check
 
+```bash
 curl http://localhost:8080/healthz
+```
 
 Expected:
 
 OK
 
+
 ---
 
-## Create Spend Event (postman or other platform)
+## Create Spend Event
 
-url: http://localhost:8080/spend
-method: POST
+POST
 
-header: {
+http://localhost:8080/spend
+
+
+Headers:
+
 Content-Type: application/json
 X-Tenant-ID: 10
-} 
 
-body: data {
-    "campaign_id":10,
-    "amount_micros":50
+Body
+{
+  "campaign_id": 100,
+  "amount_micros": 500
 }
 
 ---
 
 ## Get Daily Running Spend
 
-url: http://localhost:8080/spend/100
-method: GET
-header: {
-    X-Tenant-ID: 10
-    }
+GET
+
+http://localhost:8080/spend/100
+
+
+Headers:
+
+X-Tenant-ID: 10
+
+---
+
+## Useful Commands
+
+```bash
+go fmt ./...
+go vet ./...
+go build ./...
+go test -race ./...
+```
 
 ---
 
@@ -89,24 +116,12 @@ internal/
     service/
     tenant/
 pkg/
+scripts/
 
----
 
-## Features
+------------------------RUN SIMPLY-----------------------------
+git clone https://github.com/asif2772/campaign-spend-tracker.git
+cd campaign-spend-tracker
 
-* Layered architecture
-* PostgreSQL persistence
-* Redis running daily totals
-* Tenant isolation
-* Async event publisher
-* Health endpoint
-
----
-
-## Useful Commands
-
-go fmt ./...
-go vet ./...
-go build ./...
-go test -race ./...
-
+docker compose up -d
+go run ./cmd/server

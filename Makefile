@@ -1,3 +1,8 @@
+deps fmt vet build test run
+
+deps:
+	docker compose up -d
+
 fmt:
 	go fmt ./...
 
